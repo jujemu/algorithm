@@ -1,26 +1,33 @@
 import sys
 input = lambda: sys.stdin.readline().rstrip()
 
-A, B = input(), input()
-dp = [[0]*len(B) for _ in range(len(A))]
+N, M = map(int, input().split())
+NUMBER_OF_CHAIR = 20
 
-for b_idx in range(len(B)):
-    if B[b_idx] == A[0]:
-        for idx in range(b_idx, len(B)):
-            dp[0][idx] = 1
-        break
-
-for a_idx in range(len(A)):
-    if B[0] == A[a_idx]:
-        for idx in range(a_idx, len(A)):
-            dp[idx][0] = 1
-        break
-
-for a_idx in range(1, len(A)):
-    for b_idx in range(1, len(B)):
-        if A[a_idx] == B[b_idx]:
-            dp[a_idx][b_idx] = dp[a_idx-1][b_idx-1]+1
-        else:
-            dp[a_idx][b_idx] = max(dp[a_idx][b_idx-1], dp[a_idx-1][b_idx])
-# print(*dp, sep="\n")
-print(dp[-1][-1])
+trains = [[False]* (NUMBER_OF_CHAIR + 1) for _ in range(N)]
+for _ in range(M):
+    c = list(map(int, input().split()))
+    c[1] -= 1
+    if c[0] == 1:
+        trains[c[1]][c[2]] = True
+    elif c[0] == 2:
+        trains[c[1]][c[2]] = False
+    elif c[0] == 3:
+        for idx in range(NUMBER_OF_CHAIR-1, 0, -1):
+            trains[c[1]][idx+1] = trains[c[1]][idx]
+        trains[c[1]][1] = False
+    else:
+        for idx in range(2, NUMBER_OF_CHAIR+1):
+            trains[c[1]][idx-1] = trains[c[1]][idx]
+        trains[c[1]][-1] = False
+            
+s = set()
+result = 0
+for train in trains:
+    value2binary = 0
+    for i in range(1, NUMBER_OF_CHAIR+1):
+        value2binary += train[i] * 2**(i-1)
+    if value2binary not in s:
+        s.add(value2binary)
+        result += 1
+print(result)
