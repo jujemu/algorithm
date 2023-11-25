@@ -1,6 +1,11 @@
-5 5
-IEFCJ
-FHFKC
-FFALF
-HFGCF
-HMCHH
+
+        for i in range(6):
+            win = 0
+            for j in range(6):
+                for x in range(6):
+                    for y in range(6):
+                        if dice[b_dice_1][x] + dice[b_dice_2][y] < dice[a_dice_1][i] + dice[b_dice_2][y]:
+                            win += 1
+                if max_value < win:
+                    max_value = win
+                    max_index = [i, j]
