@@ -1,7 +1,7 @@
 def solution(friends, gifts):
-    give_whom = {name:[0]*len(friends) for name in friends}
-    get_give = {name:[0, 0] for name in friends}
-    friend_index = {name:idx for idx,name in enumerate(friends)}
+    give_whom = {name: [0]*len(friends) for name in friends}
+    get_give = {name: [0, 0] for name in friends}
+    friend_index = {name: idx for idx, name in enumerate(friends)}
 
     for gift in gifts:
         giver, getter = gift.split()
@@ -24,18 +24,15 @@ def solution(friends, gifts):
 
             if cur_number > friend_number:
                 result[c_idx] += 1
-            elif cur_number < friend_number:
-                result[f_idx] += 1
             else:
                 c_score = get_gift_score(cur, get_give)
                 f_score = get_gift_score(friend, get_give)
 
                 if c_score > f_score:
                     result[c_idx] += 1
-                elif c_score < f_score:
-                    result[f_idx] += 1
     
-    return max(result) // 2
+    return max(result)
+
 
 def get_gift_score(name, get_give):
     return get_give[name][1] - get_give[name][0]

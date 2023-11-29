@@ -1,32 +1,30 @@
-def solution(n, tops):
-    dp = get_init(n, tops) + [[0, 0] for _ in range(n-2)]
-    
-    for idx in range(2, n):
-        if idx % 1_000 == 0:
-            for i in range(idx-1_000, idx-3):
-                dp[i] = True
+from collections import deque
 
-        if tops[idx]:
-            for pre_dp in dp[idx-1]:
-                dp[idx][0] += pre_dp*3
-            rest = 0
-            if tops[idx-1]:
-                rest += sum(dp[idx-2]) * 2 + dp[idx-1][1]
-            else:
-                rest += sum(dp[idx-2]) + dp[idx-1][1]
-            dp[idx][1] += rest
-        
-        else:
-            for pre_dp in dp[idx-1]:
-                dp[idx][0] += pre_dp*2
-            rest = 0
-            if tops[idx-1]:
-                rest += sum(dp[idx-2]) * 2 + dp[idx-1][1]
-            else:
-                rest += sum(dp[idx-2]) + dp[idx-1][1]
-            dp[idx][1] += rest
+
+def solution(n, tops):
+    dp = deque(get_init(n, tops), maxlen=3)
+
+    index, fixed_index = 2, 2
+    while index < n:
+        get_dp_element(dp, index, fixed_index, tops)
+        index += 1
 
     return sum(dp[-1]) % 10007
+
+
+def get_dp_element(dp, index, fixed_index, tops):
+    coefficient = 3 if tops[index] else 2
+    dp.append([0, 0])
+
+    for pre_dp in dp[fixed_index - 1]:
+        dp[fixed_index][0] += pre_dp * coefficient
+
+    if tops[index - 1]:
+        rest = sum(dp[fixed_index - 2]) * 2 + dp[fixed_index - 1][1]
+    else:
+        rest = sum(dp[fixed_index - 2]) + dp[fixed_index - 1][1]
+    dp[fixed_index][1] += rest
+
 
 def get_init(n, tops):
     if tops[0]:

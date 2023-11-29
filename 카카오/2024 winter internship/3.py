@@ -1,8 +1,6 @@
 from itertools import combinations
 
 def solution(dice):
-    answer = []
-
     max_value, max_index = 0, None
     n = len(dice)
     for a_dice in combinations(range(n), n//2):

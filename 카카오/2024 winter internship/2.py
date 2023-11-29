@@ -1,6 +1,3 @@
-# import sys
-# sys.setrecursionlimit(10*6+1)
-
 def solution(edges):
     answer = []
 
@@ -18,11 +15,9 @@ def solution(edges):
     grid = grid[:max_number+1]
     pre_grid = pre_grid[:max_number+1]
     
+    # dfs로 첫 노드를 방문 처리 하지 않았을 때
     # 방문 안 한 노드는 추가된 노드이거나 막대의 첫 노드이다.
-    # 막대의 첫 노드는 방문이 될 수도, 안 될 수도 있다.
-    # 막대의 첫 노드는 하나의 노드만을 가리킨다.
-    # 만약 추가된 노드가 막대 그래프만을 가리키는 것이 아니라면
-    # 방문하지 않은 노드들 중에 하나의 노드만을 가리키는 것은 반드시 막대 그래프의 첫 노드이다.
+    # 조건에 의하면
     visited = [False] * max_number
     for idx in range(1, max_number):
         dfs(idx, visited, grid)
@@ -32,6 +27,7 @@ def solution(edges):
     for idx in range(1, max_number):
         if not visited[idx]:
             if not pre_grid[idx]:
+                pass
 
 
     return answer
