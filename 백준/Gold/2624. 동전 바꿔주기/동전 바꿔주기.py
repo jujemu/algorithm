@@ -18,4 +18,3 @@ for i in range(k):
             for n in range(c_coin, min(T-j, c_coin*c_number)+1, c_coin):
                 dp[i][j+n] += dp[i][j]
 print(dp[-1][-1])
-
