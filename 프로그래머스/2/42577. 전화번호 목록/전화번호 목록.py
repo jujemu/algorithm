@@ -1,10 +1,11 @@
 def solution(phone_book):
-    
-    s = set()
-    for number in sorted(phone_book, key= lambda x: -len(x)):
-        if number in s:
-            return False
-        for idx in range(1, len(number)+1):
-            n = number[:idx]
-            s.add(n)
+    hash_map = set()
+    for phone_number in phone_book:
+        hash_map.add(phone_number)
+    for phone_number in phone_book:
+        temp = ""
+        for number in phone_number:
+            temp += number
+            if temp in hash_map and temp != phone_number:
+                return False
     return True
