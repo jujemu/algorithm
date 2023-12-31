@@ -16,15 +16,10 @@ def tp(sorted_arr):
     p_2 = 1
     for p_1 in range(length-1):
         if p_1 == p_2:
-            if p_1 == length-1:
-                break
             p_2 = p_1+1
 
-        while p_2 < length:
-            if sorted_arr[p_2] * 0.9 <= sorted_arr[p_1]:
-                p_2 += 1
-            else:
-                break
+        while p_2 < length and sorted_arr[p_2] * 0.9 <= sorted_arr[p_1]:
+            p_2 += 1
 
         if p_2 != length:
             cnt += p_2 - p_1 - 1
