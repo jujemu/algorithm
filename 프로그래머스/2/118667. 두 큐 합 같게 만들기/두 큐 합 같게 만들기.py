@@ -1,30 +1,22 @@
-from collections import deque
-
 def solution(queue1, queue2):
-    sum_q = sum(queue1) + sum(queue2)
-    if sum_q % 2 != 0:
+    q = (queue1 + queue2 + queue1)
+    p_1, p_2 = 0, len(queue1)
+
+    s = sum(queue1 + queue2)
+    if s % 2:
         return -1
+    target = sum(queue1 + queue2) // 2
 
-    cur_q1, sum_cur_q1 = deque(queue1), sum(queue1)
-    cur_q2, sum_cur_q2 = deque(queue2), sum(queue2)
-    cnt, ref, num_of_last = 0, sum_q // 2, len(queue1) * 3
-    while True:
-        if sum_cur_q1 == ref:
-            break
+    cnt, cur_s = 0, sum(queue1)
+    while cnt <= len(queue1)*3:
+        if cur_s == target:
+            return cnt
 
-        if cnt == num_of_last:
-            cnt = -1
-            break
-
-        if sum_cur_q1 > ref:
-            cur = cur_q1.popleft()
-            cur_q2.append(cur)
-            sum_cur_q2 += cur
-            sum_cur_q1 -= cur
-        else:
-            cur = cur_q2.popleft()
-            cur_q1.append(cur)
-            sum_cur_q1 += cur
-            sum_cur_q2 -= cur
         cnt += 1
-    return cnt
+        if cur_s > target:
+            cur_s -= q[p_1]
+            p_1 += 1
+        else:
+            cur_s += q[p_2]
+            p_2 += 1
+    return -1
