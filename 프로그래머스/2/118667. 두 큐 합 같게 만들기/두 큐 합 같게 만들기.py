@@ -1,5 +1,8 @@
+from collections import deque
+
 def solution(queue1, queue2):
-    q = (queue1 + queue2 + queue1)
+    tmp = queue1 + queue2 + queue1
+    q = (tmp)
     p_1, p_2 = 0, len(queue1)
 
     s = sum(queue1 + queue2)
