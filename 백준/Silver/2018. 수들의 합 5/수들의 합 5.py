@@ -1,3 +1,9 @@
+'''
+https://www.acmicpc.net/problem/2018
+
+주제: 투포인터
+시간복잡도: N
+'''
 N = int(input())
 
 answer = 0
