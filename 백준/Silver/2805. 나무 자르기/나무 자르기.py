@@ -17,26 +17,49 @@ https://www.acmicpc.net/problem/2805
 import bisect
 
 
-def cutting(height):
-    result = 0
-    index = index_over_height_in_trees(height)
-    for tree in trees[index:]:
-        result += tree - height
-        if result >= M:
-            return True
-
-    return False
+def get_total(s, e, height):
+    return sum(map(lambda x: max(x - height, 0), trees[s:e]))
 
 
 def index_over_height_in_trees(height):
     return bisect.bisect_left(trees, height)
 
 
+def cutting(height):
+    global pre_sum, pre_height, pre_index
+
+    if not pre_sum:
+        pre_sum = get_total(0, len(trees), height)
+        pre_height = height
+        pre_index = index_over_height_in_trees(height)
+
+        return True if pre_sum >= M else False
+
+    cur_sum = pre_sum
+    index = index_over_height_in_trees(height)
+    if index < pre_index:
+        cur_sum += get_total(index, pre_index, height) + (len(trees) - pre_index) * (pre_height - height)
+    elif index > pre_index:
+        cur_sum -= get_total(pre_index, index, pre_height) + (len(trees) - index) * (height - pre_height)
+    elif index == pre_index:
+        if height > pre_height:
+            cur_sum -= (height - pre_height) * (len(trees) - index)
+        else:
+            cur_sum += (pre_height - height) * (len(trees) - index)
+
+    pre_index = index
+    pre_height = height
+    pre_sum = cur_sum
+
+    return True if cur_sum >= M else False
+
+
 N, M = map(int, input().split())
 trees = sorted([*map(int, input().split())])
 
-pre_index = None
 max_height = 0
+pre_sum, pre_height, pre_index = 0, None, None
+
 l, r = 0, max(trees)
 while l <= r:
     mid = (l+r) // 2
