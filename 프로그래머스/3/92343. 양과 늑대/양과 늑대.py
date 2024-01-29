@@ -1,10 +1,6 @@
-import sys
-sys.setrecursionlimit(10**6)
-
 def solution(info, edges):
-    global answer, cnt
+    global answer
     answer = 0
-    cnt = 0
     
     grid = [[] for _ in range(len(info))]
     for a, b in edges:
@@ -19,10 +15,7 @@ def solution(info, edges):
     return answer
 
 def dfs(cur_node, next_list, sheep_wolf, grid, info):
-    global answer, cnt
-    # cnt += 1
-    # if cnt > 10:
-    #     return
+    global answer
     next_list[cur_node] = False
     
     if info[cur_node]:
