@@ -8,6 +8,8 @@ def solution(n, tops):
     while index < n:
         get_dp_element(dp, index, fixed_index, tops)
         index += 1
+        for i in [0, 1]:
+            dp[fixed_index][i] %= 10007
 
     return sum(dp[-1]) % 10007
 
