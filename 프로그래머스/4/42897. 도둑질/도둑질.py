@@ -1,19 +1,26 @@
 def solution(money):
-    dp_1 = money[:-1]
-    result_1 = dp(dp_1)
-
-    dp_2 = money[1:]
-    result_2 = dp(dp_2)
-
-    return max(result_1, result_2)
-
-
-def dp(arr):
-    n = len(arr)
-    if n == 1:
-        return arr[0]
-
-    arr[1] = max(arr[:2])
-    for i in range(2, n):
-        arr[i] = max(arr[i - 2] + arr[i], arr[i - 1])
-    return arr[-1]
+    check_first_element_used = [False] * len(money)
+    check_first_element_used[0] = True
+    # if money[1] < money[0]:
+    #     check_first_element_used[1] = True
+    #     money[1] = money[0]
+    
+    money[1] = max(money[:2])
+    for i, cur in enumerate(money[2:], start=2):
+        pre_1 = money[i-1]        
+        pre_2 = money[i-2]+cur
+        if  pre_2 > pre_1:
+            check_first_element_used[i] = check_first_element_used[i-2]
+            money[i] = pre_2
+        elif  pre_2 < pre_1:
+            check_first_element_used[i] = check_first_element_used[i-1]
+            money[i] = pre_1
+        else:
+            if check_first_element_used[i-1] and check_first_element_used[i-2]:
+                check_first_element_used[i] = True
+            money[i] = pre_1
+    
+    result = 0
+    if check_first_element_used[-1]:
+        return money[-2]
+    return money[-1]
