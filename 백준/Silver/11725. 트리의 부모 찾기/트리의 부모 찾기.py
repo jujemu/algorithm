@@ -1,28 +1,22 @@
 import sys
-sys.setrecursionlimit(100001)
-# sys.stdin = open('./search/input_bj_11725.txt')
-input = sys.stdin.readline
 
+
+input = lambda: sys.stdin.readline()
 N = int(input())
-visit = [False] * (N+1)
 g = [[] for _ in range(N+1)]
 for _ in range(N-1):
-    x, y = map(int, input().split())
-    g[x].append(y)
-    g[y].append(x)
+    a, b = map(int, input().split())
+    g[a].append(b)
+    g[b].append(a)
 
-result = [0]*(N+1)
+ROOT = 1
+s = [(ROOT, None)]
 
-# dfs
-def dfs(vertex):
-    for adj in g[vertex]:
-        if not visit[adj]:
-            visit[adj] = True
-            result[adj] = vertex
-            dfs(adj)
-
-# traverse
-dfs(1)
-
-# output
-print(*result[2:], sep='\n')
+answer = [0]*(N+1)
+while s:
+    curr, parent = s.pop()
+    for adj in g[curr]:
+        if adj != parent:
+            answer[adj] = curr
+            s.append((adj, curr))
+print(*answer[2:], sep="\n")
