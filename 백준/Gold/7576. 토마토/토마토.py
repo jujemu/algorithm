@@ -1,45 +1,30 @@
-from collections import deque
-import sys
-# sys.stdin = open('./search/input_bj_7576.txt')
-input = sys.stdin.readline
+import os, io
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
 
-# input
-# number of cols, rows
 M, N = map(int, input().split())
-g = [list(map(int, input().rstrip().split())) for _ in range(N)]
+arr = [[-1] * (M + 2)] + [[-1] + list(map(int, input().split())) + [-1] for _ in range(N)] + [[-1] * (M + 2)]
+d = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+q = []
+ans = -1
+cnt = 0
 
-ripped = []
-for i in range(N):
-    for j in range(M):
-        if g[i][j] == 1:
-            ripped.append((i, j))
+for i in range(1, N + 1):
+	for j in range(1, M + 1):
+		if arr[i][j] == 0:
+			cnt += 1
+		elif arr[i][j] == 1:
+			q.append((i, j))
 
-def check():
-    for i in range(N):
-        for j in range(M):
-            if not g[i][j]:
-                return False
-    return True
+while q:
+	new_q = []
+	for i, j in q:
+		for dy, dx in d:
+			y, x = i + dy, j + dx
+			if arr[y][x] == 0:
+				cnt -= 1
+				arr[y][x] = 1
+				new_q.append((y, x))
+	q = new_q
+	ans += 1
 
-# R, D, L, U
-d = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-def bfs():
-    cnt = 0
-    
-    q = deque()
-    for x, y in ripped:
-        g[x][y] = -1
-        q.append((x, y, cnt))
-        
-    while q:
-        x, y, cnt = q.popleft()
-
-        for dx, dy in d:
-            nx, ny = x+dx, y+dy
-            if 0<= nx < N and 0<= ny < M and not g[nx][ny]:
-                q.append((nx, ny, cnt+1))
-                g[nx][ny] = -1
-    return cnt
-        
-result = bfs()
-print(result if check() else -1)
+print(ans if cnt == 0 else -1)
