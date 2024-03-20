@@ -10,14 +10,18 @@ q = deque([(N, 0)])
 while q:
     p, time = q.popleft()
 
+    if visited[p]:
+        continue
+
     visited[p] = True
     if p == K:
         answer = min(answer, time)
 
     # 2배 위치로
     np = p*2
-    if np < n and not visited[np]:
+    while np < n and not visited[np]:
         q.append((np, time))
+        np *= 2
 
     np_1, np_2 = p-1, p+1
     if 0 <= np_1 < n and not visited[np_1]:
