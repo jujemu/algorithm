@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 input = sys.stdin.readline
 
@@ -6,7 +7,7 @@ def solution():
     n, k = map(int, input().split())
     dp = [0]*(k+1)
     coin = set()
-    queue = []
+    queue = deque()
     for _ in range(n):
         c = int(input())
         if c <= k:
@@ -15,7 +16,7 @@ def solution():
             dp[c] = 1
     coin = sorted(coin)
     while queue:
-        i, cnt = queue.pop(0)
+        i, cnt = queue.popleft()
         if i == k:
             break
         for c in coin:
