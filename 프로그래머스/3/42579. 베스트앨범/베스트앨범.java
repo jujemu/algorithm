@@ -16,7 +16,11 @@ class Solution {
         }
 
         for (String key: genresToMusic.keySet()) {
-            List<List<Integer>> result = (genresToMusic.get(key).stream().sorted(Comparator.comparing((list) -> -list.get(0))).collect(Collectors.toList()));
+            List<List<Integer>> result = (genresToMusic.get(key).stream()
+                                          .sorted(
+                                              Comparator.comparing((list) -> -list.get(0))
+                                          )
+                                          .collect(Collectors.toList()));
             genresToMusic.put(key, result);
         }
 
