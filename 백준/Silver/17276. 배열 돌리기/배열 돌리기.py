@@ -1,40 +1,41 @@
-import sys
-input = lambda: sys.stdin.readline().rstrip()
+def get_parts():
+    parts = []
+    parts.append([grid[i][n // 2] for i in range(n)])
+    parts.append([grid[i][i] for i in range(n)])
+    parts.append([grid[n // 2][i] for i in range(n)])
+    parts.append([grid[n - i - 1][i] for i in range(n)])
+    return parts
 
-result = []
-for _ in range(int(input())):
+
+T = int(input())
+answer = []
+for _ in range(T):
     n, d = map(int, input().split())
-    d = d // 45 % 8
-    n_2 = n//2
+    d //= 45
+    if d > 0:
+        d = 8 - d
+    else:
+        d *= -1
 
     grid = [list(map(int, input().split())) for _ in range(n)]
-    moved_grid = [[0] * n for _ in range(n)]
-
+    parts = get_parts()
+    tmp = []
     for _ in range(d):
-        for r in range(n):
-            for c in range(n):
-                # 주 대각선
-                if r == c:
-                    moved_grid[r][n_2] = grid[r][c]
-                    continue
-                # 가운데 열
-                if c == n_2:
-                    moved_grid[r][n-r-1] = grid[r][c]
-                    continue
-                # 부 대각선
-                if r + c == n-1:
-                    moved_grid[n_2][c] = grid[r][c]
-                # 가운데 행
-                if r == n_2:
-                    moved_grid[c][c] = grid[r][c]
-        for r in range(n):
-            for c in range(n):
-                if not moved_grid[r][c]:
-                    moved_grid[r][c] = grid[r][c]
-        grid = moved_grid
-        moved_grid = [[0] * n for _ in range(n)]
-    result.append(grid)
+        tmp.append(parts[-1][::-1])
+        tmp.extend(parts[:3])
+        parts = tmp
+        tmp = []
 
-for res in result:
-    for row in res:
-        print(*row, sep=" ")
+    for i, ele in enumerate(parts[0]):
+        grid[i][n//2] = ele
+    for i, ele in enumerate(parts[1]):
+        grid[i][i] = ele
+    for i, ele in enumerate(parts[2]):
+        grid[n//2][i] = ele
+    for i, ele in enumerate(parts[3]):
+        grid[n-i-1][i] = ele
+    answer.append(grid)
+
+for i in range(T):
+    for j in range(len(answer[i])):
+        print(*answer[i][j], sep=" ")
